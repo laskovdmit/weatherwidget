@@ -1,35 +1,35 @@
 import axios from 'axios';
-import { GetterTree, MutationTree, ActionTree } from 'vuex';
+import { Module } from 'vuex';
 import {
   ICitiesWeatherState,
   ICityWeather,
   IRootState,
-  ICityParams, 
   MessageType
 } from '../../types';
 
 export default {
   namespaced: true,
-  state(): ICitiesWeatherState {
+  state() {
     return {
       citiesWeather: [],
     }
   },
   getters: {
     citiesWeather(state) {
-      return state.citiesWeather.sort((a: ICityWeather, b: ICityWeather) => {
+      return state.citiesWeather.sort((a, b) => {
         return a.order < b.order ? -1 : a.order > b.order ? 1 : 0;
       });
     }
-  } as GetterTree<ICitiesWeatherState, IRootState>,
+  },
   mutations: {
     setCitiesWeather(state, payload: ICityWeather[] ) {
       state.citiesWeather = payload;
-      localStorage.weatherCities = JSON.stringify(state.citiesWeather);
-    },
-    addCityWeather(state, payload: ICityWeather) {
-      state.citiesWeather.push(payload);
-      localStorage.weatherCities = JSON.stringify(state.citiesWeather);
+      
+      if (payload.length) {
+        localStorage.weatherCities = JSON.stringify(state.citiesWeather);
+      } else {
+        localStorage.removeItem('weatherCities');
+      }
     },
     removeCityWeather(state, id: number) {
       const idx = state.citiesWeather.findIndex(item => item.id === id);
@@ -49,17 +49,18 @@ export default {
         localStorage.removeItem('weatherCities');
       }
     }
-  } as MutationTree<ICitiesWeatherState>,
+  },
   actions: {
-    async addCity({ state, commit, rootState, dispatch }, city: ICityParams) {
+    async addCity({ state, commit, rootState, dispatch }, city: ICityWeather) {
       commit('setLoading', true, { root: true });
 
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${rootState.API_KEY}`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${city.coord.lat}&lon=${city.coord.lon}&appid=${rootState.API_KEY}&units=metric&lang=ru`;
 
       await axios(url)
         .then(response => {
           if (state.citiesWeather.findIndex(item => item.id === response.data.id) === -1) {
-            commit('addCityWeather', { ...response.data, order: city.order });
+            state.citiesWeather.push({ ...response.data, order: city.order });
+            localStorage.weatherCities = JSON.stringify(state.citiesWeather);
           } else {
             dispatch('notification/showNotification', {
               type: MessageType.WARNING,
@@ -76,6 +77,33 @@ export default {
           }, { root: true });
         })
         .finally(() => commit('setLoading', false, { root: true }));
+    },
+    async refresh({ state, commit, dispatch, rootState }) {
+      if (!state.citiesWeather.length) return;
+
+      commit('setLoading', true, { root: true });
+      const arr: ICityWeather[] = [];
+
+      for (let i = 0; i < state.citiesWeather.length; i++) {
+        const city = state.citiesWeather[i];
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${city.coord.lat}&lon=${city.coord.lon}&appid=${rootState.API_KEY}&units=metric&lang=ru`;
+        
+        await axios(url)
+          .then(response => {
+            arr.push({ ...response.data, order: city.order });
+          })
+          .catch(err => {
+            dispatch('notification/showNotification', {
+              type: MessageType.ERROR,
+              message: err.message,
+              timeout: 3000
+            }, { root: true });
+            arr.push(city);
+          });
+      }
+
+      commit('setCitiesWeather', arr);
+      commit('setLoading', false, { root: true });
     }
-  } as ActionTree<ICitiesWeatherState, IRootState>
-}
+  }
+} as Module<ICitiesWeatherState, IRootState>

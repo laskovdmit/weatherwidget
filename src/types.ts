@@ -1,21 +1,26 @@
-interface ICityParams {
+interface ICity {
+  local_names?: any;
+  name: string;
   lat: number;
   lon: number;
-  order: number;
+  country: string;
+}
+
+interface ICoord {
+  lat: number;
+  lon: number;
 }
   
 interface ICityWeather {
   id: number;
-  timezone: number;
-  visibility: number;
-  weather: any[];
-  coord: ICityParams,
+  coord: ICoord,
   order: number;
 }
 
 interface INotification {
   type?: MessageType;
   message?: string;
+  timeout?: number;
 }
 
 interface IRootState {
@@ -40,7 +45,7 @@ enum MessageType {
 }
 
 export {
-  ICityParams,
+  ICity,
   ICityWeather,
   IRootState,
   INotification,

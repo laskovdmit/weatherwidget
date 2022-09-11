@@ -39,7 +39,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
 import { ICityWeather } from '../types';
-import { useStore } from 'vuex';
+import { useStore } from '../store';
 
 export default defineComponent({
   setup() {
@@ -54,7 +54,7 @@ export default defineComponent({
     });
     let activeElemId: number;
 
-    function cutName(name: string): string {
+    function cutName(name: string) {
       return name.length > 23 ? name.slice(0, 22) + '...' : name;
     }
 

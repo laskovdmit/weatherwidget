@@ -1,11 +1,5 @@
-import {
-  createStore,
-  createLogger,
-  Plugin,
-  GetterTree,
-  MutationTree,
-  ModuleTree
-} from 'vuex';
+import { createStore, createLogger, useStore as baseUseStore, Store, Plugin } from 'vuex';
+import { InjectionKey } from 'vue';
 import { IRootState } from '../types';
 import notification from './modules/notification';
 import cities from './modules/cities';
@@ -16,9 +10,15 @@ if (process.env.NODE_ENV === 'development') {
   plugins.push(createLogger())
 }
 
-export default createStore({
+export const key: InjectionKey<Store<IRootState>> = Symbol();
+
+export function useStore() {
+  return baseUseStore(key);
+}
+
+export default createStore<IRootState>({
   plugins,
-  state(): IRootState {
+  state() {
     return {
       API_KEY: 'b6f6d966711733ed6823c3e826a29e7b',
       loading: false,
@@ -31,12 +31,11 @@ export default createStore({
     loading(state) {
       return state.loading;
     }
-  } as GetterTree<IRootState, IRootState>,
+  },
   mutations: {
     setLoading(state, payload: boolean) {
       state.loading = payload;
     }
-  } as MutationTree<IRootState>,
-  modules: { notification, cities } as ModuleTree<IRootState>
+  },
+  modules: { notification, cities }
 })
-export { IRootState }

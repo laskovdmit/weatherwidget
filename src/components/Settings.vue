@@ -26,11 +26,11 @@
         <li
           v-for="(city, i) in cityList"
           class="settings__item"
-          :key="city.name + i"
+          :key="i"
           @click="chooseCity(city)"
         >
           <button type="button" class="settings__btn">
-            {{ city.name }}, {{ city.state }}
+            {{ city.name }}, {{ city.country }}
           </button>
         </li>
       </ul>
@@ -43,22 +43,22 @@
 
 <script lang="ts">
 import { defineComponent, ref, Ref, onMounted, onUnmounted, computed } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '../store';
 import axios from 'axios';
-import { ICityParams, MessageType } from '../types';
+import { ICity, MessageType } from '../types';
 import SettingsCityList from '@/components/SettingsCityList.vue';
 
 export default defineComponent({
   emits: ['close'],
   setup(_, { emit }) {
     const store = useStore();
-    const key = store.getters['apiKey'];
+    const key: string = store.getters['apiKey'];
 
     const citiesLength = computed<number>(() => {
       return store.getters['cities/citiesWeather'].length;
     });
 
-    const cityList: Ref<ICityParams[]> = ref([]);
+    const cityList: Ref<ICity[]> = ref([]);
     let cityName: Ref<string> = ref('');
     let timeout: boolean = false; 
     let lastInput: string = '';
@@ -90,9 +90,18 @@ export default defineComponent({
     }
     
     async function getGeocode(input: string) {
-      await axios(`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${key}`)
+      await axios.get<ICity[]>(`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=5&appid=${key}`)
         .then(response => {
-          cityList.value = response.data;
+          cityList.value = response.data.map(city => {
+            const name: string = city.local_names && city.local_names.ru ? city.local_names.ru : city.name;
+
+            return {
+              name,
+              lat: city.lat,
+              lon: city.lon,
+              country: city.country
+            }
+          });
         })
         .catch(err => {
           store.dispatch('notification/showNotification', {
@@ -103,11 +112,13 @@ export default defineComponent({
         })
     }
 
-    function chooseCity(city: ICityParams) {
+    function chooseCity(city: ICity) {
       store.dispatch('cities/addCity', {
-        lon: city.lon,
-        lat: city.lat,
-        order: citiesLength.value + 1
+        order: citiesLength.value + 1,
+        coord: {
+          lon: city.lon,
+          lat: city.lat,
+        }
       });
       emit('close');
     }
@@ -126,19 +137,9 @@ export default defineComponent({
       }
     }
 
-    const escPress = (event: KeyboardEvent) => {
-      if (event.code === 'Escape') {
-        emit('close');
-      }
-    }
-
-    onMounted(() => {
-      window.addEventListener('keydown', escPress);
-    });
-
-    onUnmounted(() => {
-      window.removeEventListener('keydown', escPress);
-    });
+    const escPress = (event: KeyboardEvent) => event.code === 'Escape' ? emit('close'): null;
+    onMounted(() => window.addEventListener('keydown', escPress));
+    onUnmounted(() => window.removeEventListener('keydown', escPress));
 
     return {
       cityName,

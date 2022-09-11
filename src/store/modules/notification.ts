@@ -1,9 +1,9 @@
-import { GetterTree, MutationTree, ActionTree } from 'vuex';
+import { Module } from 'vuex';
 import { INotificationState, INotification, IRootState } from '../../types';
 
 export default {
   namespaced: true,
-  state(): INotificationState {
+  state() {
     return {
       notification: false,
       notificationProps: {},
@@ -17,7 +17,7 @@ export default {
     notificationProps(state) {
       return state.notificationProps;
     },
-  } as GetterTree<INotificationState, IRootState>,
+  },
   mutations: {
     setNotification(state, payload: boolean) {
       if (state.timerID !== null) {
@@ -29,9 +29,9 @@ export default {
       }
       state.notification = payload;
     },
-  } as MutationTree<INotificationState>,
+  },
   actions: {
-    showNotification({ state, commit }, payload) {
+    showNotification({ state, commit }, payload: INotification) {
       commit('setNotification', true);
 
       state.notificationProps = {
@@ -41,5 +41,5 @@ export default {
 
       state.timerID = setTimeout(() => commit('setNotification', false), payload.timeout);
     }
-  } as ActionTree<INotificationState, IRootState>
-}
+  }
+} as Module<INotificationState, IRootState>
