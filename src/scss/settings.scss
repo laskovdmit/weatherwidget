@@ -1,0 +1,156 @@
+.settings {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    background-color: $bg-setting-color;
+    overflow-y: auto;
+
+    &__title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    &__section {
+        margin-bottom: 10px;
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    &__header {
+        margin-bottom: 20px;
+        padding-right: 20px;
+    }
+
+    &__close {
+        cursor: pointer;
+        position: absolute;
+        top: 11px;
+        right: 13px;
+
+        background-color: inherit;
+        border: none;
+        font-size: 24px;
+        font-weight: bold;
+        
+        &:hover {
+            color: $element-color-hover;
+        }
+
+        &:active {
+            color: $element-color-active;
+        }
+    }
+
+    &__input {
+        border-radius: 5px;
+        width: 100%;
+        border: none;
+        padding: 5px 10px;
+        margin-bottom: 20px;
+    }
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        &--cities {
+            height: 180px;
+            overflow-y: auto;
+        }
+
+        &--clues {
+            height: 180px;
+            overflow-y: auto;
+        }
+    }
+
+    &__city {
+        cursor: grab;
+        position: relative;
+        padding: 5px 35px;
+        margin-bottom: 5px;
+
+        background-color: $bg-color;
+        border-radius: 5px;
+        
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+
+        &:hover .settings__drag svg {
+            fill: $element-color-hover;
+        }
+        
+        &:active .settings__drag svg {
+            fill: $element-color-active;
+        }
+    }
+
+    &__drag, &__trash {
+        position: absolute;
+        top: 50%;
+        
+        display: flex;
+        align-items: center;
+        border: none;
+        padding: 0;
+        margin: 0;
+        transform: translate(0, -50%);
+        
+
+        & svg {
+            width: 20px;
+            height: 20px;
+            fill: $element-color;
+        }
+    }
+
+    &__drag {
+        cursor: grab;
+        left: 7px;
+    }
+
+    &__trash {
+        cursor: pointer;
+        right: 7px;
+        
+
+        & svg {
+            &:hover {
+                fill: $element-color-hover;
+            }
+    
+            &:active {
+                fill: $element-color-active;
+            }
+        }
+    }
+
+    &__item {
+        margin-bottom: 10px;
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    &__btn {
+        cursor: pointer;
+        width: 100%;
+        padding: 5px 10px;
+        text-align: center;
+        border: 1px solid #eee;
+        background-color: #fff;
+        border-radius: 5px;
+
+        &:hover {
+            background-color: #eee;
+        }
+
+        &:active {
+            background-color: rgb(247, 247, 247);
+        }
+    }
+}

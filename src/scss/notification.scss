@@ -1,0 +1,45 @@
+.notification {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 80px;
+    padding: 15px 25px;
+
+    &__close {
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 3px;
+
+        background-color: inherit;
+        border: none;
+        font-size: 20px;
+        font-weight: bold;
+        
+        &:hover {
+            color: $element-color-hover;
+        }
+
+        &:active {
+            color: $element-color-active;
+        }
+    }
+
+    &--success {
+        background-color: $message-success;
+    }
+
+    &--warning {
+        background-color: $message-warning;
+    }
+
+    &--error {
+        background-color: $message-error;
+    }
+}
