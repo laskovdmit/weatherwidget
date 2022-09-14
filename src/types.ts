@@ -6,15 +6,34 @@ interface ICity {
   country: string;
 }
 
+interface ICityProps {
+  order: number;
+  coord: ICoord;
+}
+
 interface ICoord {
   lat: number;
   lon: number;
 }
-  
-interface ICityWeather {
+
+interface IWeather {
+  icon: string;
+  description: string;
+}
+
+interface ITemperature {
+  temp: number;
+  feels_like: number;
+}
+
+interface WeatherDetails extends ICityProps {
   id: number;
-  coord: ICoord,
-  order: number;
+  weather: IWeather[];
+  main: ITemperature;
+  visibility: number;
+  wind: {
+    speed: number;
+  },
 }
 
 interface INotification {
@@ -35,7 +54,7 @@ interface INotificationState {
 }
 
 interface ICitiesWeatherState {
-  citiesWeather: ICityWeather[];
+  citiesWeather: WeatherDetails[];
 }
 
 enum MessageType {
@@ -46,9 +65,10 @@ enum MessageType {
 
 export {
   ICity,
-  ICityWeather,
-  IRootState,
+  ICityProps,
+  WeatherDetails,
   INotification,
+  IRootState,
   INotificationState,
   ICitiesWeatherState,
   MessageType

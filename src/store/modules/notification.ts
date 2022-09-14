@@ -23,10 +23,7 @@ export default {
       if (state.timerID !== null) {
         clearTimeout(state.timerID);
       }
-
-      if (payload === false) {
-        state.notificationProps = {};
-      }
+      
       state.notification = payload;
     },
   },

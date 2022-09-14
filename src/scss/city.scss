@@ -1,0 +1,127 @@
+.city {
+    width: 100%;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) );
+    
+    &__header {
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        margin-bottom: 40px;
+        color: #fff;
+    }
+
+    &__temperature {
+        display: flex;
+        padding-left: 30px;
+        padding-right: 15px;
+    }
+
+    &__degree {
+        font-size: 60px;
+        line-height: 54px;
+        font-weight: 800;
+    }
+
+    &__celsius {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    &__name {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 3px;
+    }
+
+    &__wrap {
+        width: 100%;
+        padding-right: 30px;
+    }
+
+    &__weather {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    &__details {
+        flex-grow: 1;
+        background-color: #fff;
+        width: 100%;
+        padding: 20px;
+        padding-bottom: 40px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    &__item {
+        flex-basis: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:nth-child(odd) {
+            padding-right: 10px;
+        }
+    }
+
+    &__icon {
+        padding-right: 10px;
+        & svg {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    &__value {
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    &__descr {
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    &--01 {
+        background-image: url(https://sun9-16.userapi.com/impg/yzUBu_F8TLYyA_mjJjUErt_pBPoOO8yQrjpMAA/QPwTdfy_458.jpg?size=800x800&quality=96&sign=1918c960735cf84855cf77c63264869a&type=album);
+    }
+
+    &--02 {
+        background-image: url(https://sun9-45.userapi.com/impg/ETsN7CpyTAZLvmRNb69Ub8I8UaAeDPiZOdwMig/VrzcrRZh4do.jpg?size=800x800&quality=96&sign=5071a2fd040b646d676f771d310de79d&type=album);
+    }
+
+    &--03 {
+        background-image: url(https://sun9-64.userapi.com/impg/PjJumUCRTxrnRybBF6k5bV2xRkMM9JvH9ab6kA/Zr178vBVkU4.jpg?size=800x800&quality=96&sign=246bd9812dcbfdbc46392b01874daedc&type=album);
+    }
+
+    &--04 {
+        background-image: url(https://sun9-7.userapi.com/impg/I4Yi0KT0WcP99fAZOyBNn2CZchfKvFsRFQ-1Tw/pPg5e4a4cSY.jpg?size=800x800&quality=96&sign=22b1a8430273bde577691e96dda0484e&type=album);
+    }
+
+    &--09 {
+        background-image: url(https://sun9-83.userapi.com/impg/Wdr65N4iGwn6efDFQEpKBMnODU6bsO54FMiIeA/81ynDizfyWk.jpg?size=800x800&quality=96&sign=ddca1847950b6043838afeaab0fa154c&type=album);
+    }
+
+    &--10 {
+        background-image: url(https://sun9-82.userapi.com/impg/35OkaEanJEwZE_ZerSHk2R5VA2zCDfIovuAFoA/Q8xblsGEs-0.jpg?size=800x800&quality=96&sign=f1ae512d340e9731e36a1f61666027a1&type=album);
+    }
+
+    &--11 {
+        background-image: url(https://sun2.ufanet.userapi.com/impg/QPYg8gNfG3MHOSU27Y_sqHzO5d0atWoE71tXJg/QDpR-bc6iNk.jpg?size=800x800&quality=96&sign=02b95fb0223c2f97786fffd137ba34ed&type=album);
+    }
+
+    &--13 {
+        background-image: url(https://sun9-57.userapi.com/impg/2pi21zq69MeiV84hBhyz-kEn8_n6cfjzwlJymw/r-3SYUbeg6Y.jpg?size=800x800&quality=96&sign=8f1efc0c63b41c8544280446b988da09&type=album);
+    }
+
+    &--50 {
+        background-image: url(https://sun9-54.userapi.com/impg/J3asOJ5OykEVuqSmS8jOL2D86AOXVDdSb6AovQ/fmRGSfnC4vM.jpg?size=800x800&quality=96&sign=c32e91f90b84fd3402cd9c76354a4fa8&type=album);
+    }
+}

@@ -10,32 +10,45 @@
         &times;
       </button>
     </div>
-    <div class="settings__section">
-      <settings-city-list />
-    </div>
-    <div class="settings__section">
-      <input
-        v-model="cityName"
-        class="settings__input"
-        type="input"
-        placeholder="Введиет населенный пункт"
-        @input="getClues"
-        @keypress="preventInput"
-      >
-      <ul v-if="cityList.length" class="settings__list settings__list--clues">
-        <li
-          v-for="(city, i) in cityList"
-          class="settings__item"
-          :key="i"
-          @click="chooseCity(city)"
+    <settings-city-list @remove-sity="$emit('remove-sity')"/>
+    <div class="settings__text">Добавить город</div>
+    <div :class="[
+      'settings__select',
+      'select', 
+      { 'select--active': cityName.length },
+      { 'select--down': !citiesLength }
+    ]">
+      <div class="select__header">
+        <input
+          v-model="cityName"
+          class="select__input"
+          type="input"
+          placeholder="Введите населенный пункт"
+          @input="getClues"
+          @keypress="preventInput"
         >
-          <button type="button" class="settings__btn">
-            {{ city.name }}, {{ city.country }}
-          </button>
-        </li>
-      </ul>
-      <div v-else class="settings__text">
-        Нет совпадения
+        <button
+          v-if="cityName.length"
+          class="select__close"
+          type="button"
+          @click="cityName = ''; cityList = []"
+        >
+          &times;
+        </button>
+      </div>
+      <div v-if="cityList.length" class="select__body">
+        <ul class="select__list">
+          <li
+            v-for="(city, i) in cityList"
+            class="select__item"
+            :key="i"
+            @click="chooseCity(city)"
+          >
+            <button type="button" class="select__btn">
+              {{ city.name }}, {{ city.country }}
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -45,11 +58,11 @@
 import { defineComponent, ref, Ref, onMounted, onUnmounted, computed } from 'vue';
 import { useStore } from '../store';
 import axios from 'axios';
-import { ICity, MessageType } from '../types';
+import { ICity, ICityProps, MessageType, INotification } from '../types';
 import SettingsCityList from '@/components/SettingsCityList.vue';
 
 export default defineComponent({
-  emits: ['close'],
+  emits: ['close', 'remove-sity'],
   setup(_, { emit }) {
     const store = useStore();
     const key: string = store.getters['apiKey'];
@@ -100,7 +113,7 @@ export default defineComponent({
               lat: city.lat,
               lon: city.lon,
               country: city.country
-            }
+            } as ICity
           });
         })
         .catch(err => {
@@ -108,7 +121,7 @@ export default defineComponent({
             type: MessageType.ERROR,
             message: err.message,
             timeout: 3000
-          });
+          } as INotification);
         })
     }
 
@@ -119,7 +132,7 @@ export default defineComponent({
           lon: city.lon,
           lat: city.lat,
         }
-      });
+      } as ICityProps);
       emit('close');
     }
 
@@ -133,7 +146,7 @@ export default defineComponent({
           type: MessageType.WARNING,
           message: 'Можно ввести только буквы/цифры, пробел и .,-\\/',
           timeout: 3000
-        });
+        } as INotification);
       }
     }
 
@@ -146,7 +159,8 @@ export default defineComponent({
       getClues,
       cityList,
       chooseCity,
-      preventInput
+      preventInput,
+      citiesLength
     }
   },
   components: { SettingsCityList }

@@ -1,7 +1,7 @@
 <template>
   <ul
     v-if="addedCities.length"
-    class="settings__list settings__list--cities"
+    class="settings__list"
     @dragover.prevent
     @dragenter.prevent
   >
@@ -38,13 +38,14 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { ICityWeather } from '../types';
+import { WeatherDetails } from '../types';
 import { useStore } from '../store';
 
 export default defineComponent({
-  setup() {
+  emits: ['remove-sity'],
+  setup(_, { emit }) {
     const store = useStore();
-    const addedCities = computed<ICityWeather[]>({
+    const addedCities = computed<WeatherDetails[]>({
       get() {
         return store.getters['cities/citiesWeather'];
       },
@@ -60,9 +61,10 @@ export default defineComponent({
 
     function removeCity(id: number) {
       store.commit('cities/removeCityWeather', id);
+      emit('remove-sity');
     }
 
-    function dragStart(event: DragEvent, city: ICityWeather) {
+    function dragStart(event: DragEvent, city: WeatherDetails) {
       if (event.dataTransfer) {
         event.dataTransfer.effectAllowed = "move";
         event.dataTransfer.dropEffect = "move";
@@ -70,12 +72,12 @@ export default defineComponent({
       activeElemId = city.id;
     }
 
-    function dragOver(city: ICityWeather) {
+    function dragOver(city: WeatherDetails) {
       if (city.id === activeElemId) return;
 
       const otherCities = addedCities.value.filter(item => {
         return item.id !== city.id && item.id !== activeElemId;
-      }).map(item => item);
+      });
 
 
       const activeCity = addedCities.value.find(item => item.id === activeElemId);

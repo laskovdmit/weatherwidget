@@ -1,0 +1,103 @@
+.select {
+    position: relative;
+
+    &--active {
+        & .select__input {
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+        }
+    }
+
+    &--down {
+        &.select--active .select__input {
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        & .select__body {
+            bottom: auto;
+            top: 100%;
+            border-top-right-radius: 0px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+    }
+
+    &__body {
+        position: absolute;
+        bottom: 100%;
+
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid $border-color;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+    }
+
+    &__input {
+        border-radius: 5px;
+        width: 100%;
+        border: 1px solid $border-color;
+        padding: 7px 10px;
+        padding-right: 30px;
+
+        &::placeholder {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    } 
+
+    &__close {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translate(0, -50%);
+
+        border: none;
+        background-color: transparent;
+        font-size: 20px;
+        font-weight: 400;
+        
+        &:hover {
+            color: $element-color-hover;
+        }
+
+        &:active {
+            color: $element-color-active;
+        }
+    }
+    
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__item {
+        border-bottom: 1px solid $border-color;
+
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    &__btn {
+        cursor: pointer;
+        width: 100%;
+        padding: 10px 10px;
+        border: none;
+        background-color: inherit;
+
+        &:hover {
+            background-color: rgb(244, 244, 244);
+        }
+
+        &:active {
+            background-color: rgb(237, 237, 237);
+        }
+    }
+}
